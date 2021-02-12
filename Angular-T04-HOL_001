@@ -1,0 +1,52 @@
+Department.ts:
+export interface Department{
+    id:number;
+    name:string;
+}
+Skill.ts:
+export interface skill{
+    id:number;
+    name:string;
+}
+Employee.ts:
+export interface Employee{
+    id:number;
+    name:string;
+    salary:number;
+    permanent:boolean;
+}
+Employee-test.ts:
+import {Employee} from './Employee'
+import {Department} from './department'
+import {Skill} from './skill'
+var e1:Employee={
+    id:1001,
+    name:"John",
+    salary:10000,
+    permanent:true
+}
+
+var d1:Department={
+    id:1,
+    name:"Payroll"
+}
+
+var s1:Skill[];
+s1=[{id:1,name:"Javascript"},{id:2,name:"CSS"},{id:3,name:"Html"}];
+
+console.log(`ID:${e1.id}`);
+console.log(`Name:${e1.name}`);
+console.log(`Salary:${e1.salary}`);
+console.log(`Permanent:${e1.permanent}`);
+
+console.log(`Department ID:${d1.id}`);
+console.log(`Department Name:${d1.name}`);
+
+for(let skills of s1){
+    console.log(skills);
+}
+Employee-test.html:
+<script>
+    var exports={};
+</script>
+<script src="employee-test.js"></script>
