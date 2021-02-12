@@ -1,0 +1,3 @@
+ng generate component hello
+hello.component.html:
+<h1>Hello World!</h1>
