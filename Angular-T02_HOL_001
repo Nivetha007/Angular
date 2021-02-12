@@ -1,0 +1,3 @@
+Creating a project:
+ng new first-project 
+ng serve
