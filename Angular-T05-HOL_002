@@ -1,0 +1,121 @@
+Create a Template-Driven-Forms in Angular
+
+Template-driven-form.component.html:
+<div class="row">
+    <div class="col-md-4 col-md-offset-4" style="margin-top: 50px; border: 1px solid rgb(100,98,98); padding:30px;">
+    <form class="form-horizontal" role="form" #f="ngForm" (ngSubmit)="f.form.valid && onFormSubmit(f)">
+        <fieldset>
+            <legend>Address Details: <strong>Template Driven Form</strong></legend>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="textinput">Address</label>
+                    <div class="col-sm-10">
+                        <input type="text" [(ngModel)]="model.address" [ngClass]="{'invalid-data':address.invalid && f.submitted,'valid-data':address.valid && f.submitted}" 
+                        required name="address" placeholder="Enter Address" class="form-control" #address="ngModel">
+                        <div *ngIf="address.invalid && f.submitted">
+                            <span style="color:red">Please Enter Address</span></div> 
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="textinput">City</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="city" placeholder="Enter City" class="form-control" ngModel>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="textinput">State</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="state" placeholder="Enter State" class="form-control" ngModel>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="textinput">PostCode</label>
+                    <div class="col-sm-10">
+                        <input type="number" name="city" placeholder="Enter Post code" class="form-control" ngModel>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="textinput">Country</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="country"  [(ngModel)]="model.country" [ngClass]="{'invalid-data':country.invalid && f.submitted,'valid-data':country.valid && f.submitted}" 
+                        required #country="ngModel">
+                            <option>---select---</option>
+                            <option *ngFor="let item of countryData" [value]="item">{{item}}</option>
+                        </select>
+                    </div>
+                    <div *ngIf="address.invalid && f.submitted">
+                        <span style="color:red">Please Select Country</span></div> 
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2 form-check">
+                        <input type="checkbox" name="agreement"  [(ngModel)]="model.agreement" [ngClass]="{'invalid-data':agreement.invalid && f.submitted,'valid-data':agreement.valid && f.submitted}" 
+                        required #agreement="ngModel" class="form-check-label">
+                    </div>
+                    <label class="col-sm-10 form-check-label">I agree to tems and conditions</label>
+                    <div *ngIf="address.invalid && f.submitted">
+                        <span style="color:red;">Please agree with terms and conditions</span>
+                    </div> 
+                </div>
+
+                
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="pull-right">
+                            <button type="submit" class="btn-btn-primary" style="margin:4px">Save</button>
+                            <button type="reset" class="btn-btn-default" style="margin:4px">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            
+        </fieldset>
+    </form>
+   </div>
+</div>
+Template-driven-form.component.ts:
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import {AddressModels} from 'src/app/address-models.model';
+
+@Component({
+  selector: 'app-template-driven-form',
+  templateUrl: './template-driven-form.component.html',
+  styleUrls: ['./template-driven-form.component.css']
+})
+export class TemplateDrivenFormComponent implements OnInit {
+  countryData:any[]=['India','US','UK'];
+  model:AddressModels={
+    address:'',
+    city:'',
+    state:'',
+    postcode:0,
+    country:[],
+    agreement:false
+
+  };
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  onFormSubmit(f:NgForm){
+    console.log("Full Address",f.value);
+  }
+
+}
+
+Address-model.model.ts:
+export interface AddressModels {
+    
+        address:string,
+        city:string,
+        state:string,
+        postcode:number,
+        country:any[],
+        agreement:boolean 
+    
+}
