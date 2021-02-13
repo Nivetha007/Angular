@@ -1,0 +1,96 @@
+Implement component communication in an Angular application
+Create parent, child and sibling component
+Parent to Child: Sharing Data via Input
+Parent.component.ts:	
+import { Component } from '@angular/core';
+@Component({
+selector: 'app-parent',
+template: `
+<app-child [childMessage]="parentMessage"></app-child>
+`,
+styleUrls: ['./parent.component.css']
+})
+export class ParentComponent{
+parentMessage = "Hello World"
+constructor() { }
+child.component.ts:
+import { Component, Input } from '@angular/core';
+@Component({
+selector: 'app-child',
+template: `
+ {{ message }}
+`,
+styleUrls: ['./child.component.css']
+})
+export class ChildComponent {
+@Input() childMessage: string;
+constructor() { }
+}
+Child to Parent: Sharing Data via ViewChild:	
+Paren.component.ts:	
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { ChildComponent } from "../child/child.component";
+@Component({
+selector: 'app-parent',
+template: `
+Message: {{ message }}
+<app-child></app-child>
+`,
+styleUrls: ['./parent.component.css']
+})
+export class ParentComponent implements AfterViewInit {
+@ViewChild(ChildComponent) child;
+constructor() { }
+message:string;
+ngAfterViewInit() {
+this.message = this.child.message
+}
+}
+Child.component.html:
+import { Component} from '@angular/core';
+@Component({
+selector: 'app-child',
+template: `
+`,
+styleUrls: ['./child.component.css']
+})
+export class ChildComponent {
+message = 'Hello World!';
+constructor() { }
+}
+Child to Parent: Sharing Data via Output() and EventEmitter:
+Parent.component.ts:
+import { Component } from '@angular/core';
+@Component({
+selector: 'app-parent',
+template: `
+Message: {{message}}
+<app-child (messageEvent)="receiveMessage($event)"></app-child>
+`,
+styleUrls: ['./parent.component.css']
+})
+export class ParentComponent {
+constructor() { }
+message:string;
+receiveMessage($event) {
+this.message = $event
+}
+}
+Child.component.ts:
+import { Component, Output, EventEmitter } from '@angular/core';
+@Component({
+selector: 'app-child',
+template: `
+<button (click)="sendMessage()">Send Message</button>
+`,
+styleUrls: ['./child.component.css']
+})
+export class ChildComponent {
+message: string = "Hello World!"
+@Output() messageEvent = new EventEmitter<string>();
+constructor() { }
+sendMessage() {
+this.messageEvent.emit(this.message)
+}
+}
+
