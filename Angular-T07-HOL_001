@@ -1,0 +1,38 @@
+Implement navigation in an Angular application
+Menu.component.html:
+import { Injectable, NgModule } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+@NgModule({
+  providers:[]
+})
+
+export class DataService {
+ private messageSource = new BehaviorSubject('default message');
+ currentMessage = this.messageSource.asObservable();
+ constructor() { }
+ changeMessage(message: string) {
+   this.messageSource.next(message)
+ }
+}
+Router-config.ts:
+import {Routes} from '@angular/router';
+import {HomeComponent} from './components/home/home.component';
+import {AboutComponent} from './components/about/about.component';
+import {LoginComponent} from './components/login/login.component';
+import {MenuComponent} from './menu/menu.component';
+
+export const appRoutes:Routes=[
+    {path:'home',component:HomeComponent},
+    {path:'about',component:AboutComponent},
+    {path:'login',component:LoginComponent},
+    {path:'menu',component:MenuComponent}
+]
+App.component.html:
+<app-menu></app-menu>
+<router-outlet></router-outlet>
+
