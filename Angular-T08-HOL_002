@@ -1,0 +1,55 @@
+Implement asynchronous or callback-based code in an Angular Application using RxJS.
+App.component.html:
+
+<b>Observables Demo</b>
+<h6 style="margin-bottom: 0">VALUES:</h6>
+<div *ngFor="let value of numArray"> {{ value }}</div>
+<div style="margin-bottom: 0">ERRORS: {{ errors }}</div>
+<div style="margin-bottom: 0">finished: {{ finished }}</div>
+<button style="margin-top: 2rem;" (click)="fetchData()">Fetch Data</button>
+
+App.component.ts:
+import { Component } from '@angular/core';
+
+import { Observable } from 'rxjs';
+
+@Component({
+
+selector: 'app-root',
+
+templateUrl: './app.component.html',
+
+styleUrls: ['./app.component.css']
+
+})
+
+export class AppComponent {
+
+data!: Observable<number>;
+
+numArray: number[] = [];
+
+errors!: boolean;
+
+finished!: boolean;
+
+fetchData() {
+
+this.data = new Observable(observer => {
+
+setTimeout(() => { observer.next(10); }, 1000),
+
+setTimeout(() => { observer.next(20); }, 2000),
+
+setTimeout(() => { observer.complete(); }, 3000);
+
+});
+
+const sub = this.data.subscribe((value) => this. numArray.push(value),
+
+error => this.errors = true,
+
+() => this.finished = true);
+
+}
+}
