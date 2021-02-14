@@ -1,0 +1,57 @@
+User.component.ts:
+import { Component, OnInit } from '@angular/core';
+import {UserService} from '../user.service'
+import {User} from '../IUser'
+
+@Component({
+  selector: 'app-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.css']
+})
+export class UserComponent implements OnInit {
+
+  title='nav-demo';
+  constructor(private userService:UserService){ }
+  receivedData!: User[];
+  receivedSingleData!: User;DataToBePushed:User={id:0,name:"",age:"",gender:"",salary:""
+  };
+  FetchData(){
+    const GetAllUserData = this.userService.getAllUsers().subscribe(response => this.receivedData = response);
+  }
+  fetchSingleData(){
+    const constGetUserData=this.userService.getSingleUser(this.id).subscribe(response => this.receivedSingleData = response);
+  }
+   ngOnInit(): void {
+  }
+}
+User.service.ts:
+import {Injectable} from '@angular/core';
+import {HttpClient} from'@angular/common/http';
+import {HttpHeaders }from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {User} from '../app/IUser'
+@Injectable({
+    providedIn:'root'
+})
+
+export class UserService{
+    url2="https://reqres.in/api/users"
+constructor(private http:HttpClient) { }
+getAllUsers():Observable<User[]>{
+    return this.http.get<User[]>(this.url2)
+}
+getSingleUser(id:number){
+    return this.http.get<User>(this.url2+id)
+}
+CreateUser(data:User){
+    this.http.post<User>(this.url2,data,{headers:new HttpHeaders
+        ({'Content-Type':'application/json'})})
+        .subscribe(response=>console.log(JSON.parse(JSON.stringify(response))));
+    }
+UpdateUser(data:User){
+    this.http.put<User>(this.url2+data.id,data,{
+        headers:new HttpHeaders({'Content-Type':'application/json'})})
+        .subscribe(response=>console.log("Successfully Updated"));}
+    }
+DeleteUser(id:number){
+    this.http.delete(this.url2+id).subscribe(response => console.log("Successfully Deleted"));; 
