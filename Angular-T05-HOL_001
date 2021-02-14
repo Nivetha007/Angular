@@ -1,0 +1,167 @@
+Edit-emp-reactive.component.ts:
+import { Component, OnInit } from '@angular/core';
+import {FormControl,FormGroup,Validators} from '@angular/forms';
+import {Department} from './department'
+import {Skill} from './skill'
+import {Employee} from './Employee'
+
+@Component({
+  selector: 'app-edit-emp-reactive',
+  templateUrl: './edit-emp-reactive.component.html',
+  styleUrls: ['./edit-emp-reactive.component.css']
+})
+export class EditEmpReactiveComponent implements OnInit {
+ 
+
+  employee:Employee={
+    id:0,
+    name:'',
+    salary:0,
+    permanent:true
+}
+ department:Department={
+    id:0,
+    name:''
+}
+ skill:Skill= {id:0,name:''}
+
+  empForm = new FormGroup({
+  id: new FormControl(this.employee.id, [Validators.required]),
+ name: new FormControl(this.employee.name, [Validators.required,Validators.minLength(4), Validators.maxLength(20)]),
+ salary: new FormControl(this.employee.salary, [Validators.required]),
+ permamnent: new FormControl(this.employee.permanent, [Validators.required])
+  
+  });
+
+  departmentForm=new FormGroup({
+    id:new FormControl('',Validators.required),
+    name:new FormControl('',[Validators.required,Validators.minLength(3)]),
+});
+skillsForm=new FormGroup({
+  id:new FormControl('',Validators.required),
+  name:new FormControl('',[Validators.required,Validators.minLength(3)]),})
+  
+
+  SubmitEmployeeData(){
+    this.employee.id=this.empForm.get('id')!.value;
+    this.employee.name=this.empForm.get('name')!.value;
+    this.employee.salary=this.empForm.get('salary')!.value;
+    this.employee.permanent=this.empForm.get('permanent')!.value;}
+  
+  
+  depts= ['Payroll','Finance','Sales']
+  SubmitDepartmentData(){
+    this.department.id=this.departmentForm.get('id')!.value;
+    this.department.name=this.departmentForm.get('name')!.value;
+}
+
+skills=  ['HTML','CSS','Javascript']
+SubmitSkillsData(){
+  this.skill.id=this.skillsForm.get('id')!.value;
+  this.skill.name=this.skillsForm.get('name')!.value;
+}
+ constructor() { }
+ ngOnInit(): void {
+  }
+}
+
+Edit-emp-reactive.component.html:
+<form [formGroup]="empForm" (ngSubmit)="SubmitEmployeeData()">
+  <div class="container">
+        <h2>Employee Data</h2>
+        <div class="row">
+            <label>
+               ID:
+                <input type="number" formControlName="id" required>
+            </label>
+        </div>
+        <br/>
+    <div class="row">
+        <label>
+        Name:
+        <input type="text" formControlName="name" required>
+    </label>
+    </div>
+    <br/>
+    <div class="row">
+        <label>
+        Salary:
+        <input type="number" formControlName="salary" required>
+    </label>
+    </div>
+    <br/>
+    <div class="row">
+        <label>
+        Job Type:
+        <input type="radio" formControlName="permanent" name="permanent" value="true" required>Permanent
+        <input type="radio" formControlName="permanent" name="permanent" value="false" required>Temporary
+    </label>
+    </div>
+    <br/>
+    <div class="row">
+        <button type="submit">Submit</button>
+   </div>
+</div>
+</form>
+
+<ul *ngIf='employee.id!=0'><li>Id : {{employee.id}}</li>
+    <li>Name: {{employee.name}}</li><li>Salary : {{employee.salary}}</li>
+    <li>Job Type : {{employee.permanent}}</li></ul>
+<div class="container">  
+   <form [formGroup]="departmentForm" (ngSubmit)="SubmitDepartmentData()"><br>
+    <h2>Department Data</h2>
+    <div class="row">
+        <label>
+           Department ID:
+             <input type="number" formControlName="id" required>
+           </label>
+          
+    </div>
+    <br/>
+    <label>
+    Department Name:
+    <select formControlName="name">
+        <option *ngFor='let dept of depts'([ngValue])="dept">
+            {{dept}}
+        </option></select>
+</label>
+
+<br/><br>
+    <div class="row">
+         <button type="submit">Submit</button>
+    </div>
+   
+</form>  
+</div>
+<ul *ngIf='department.id!=0'><li>Department Id : {{department.id}}</li>
+    <li>Department Name : {{department.name}}</li></ul>
+
+<div class="container">
+    <h2>Skills Data</h2>
+    <form [formGroup]="skillsForm" (ngSubmit)="SubmitSkillsData()"><br>
+        <label>Id:<input type="number"formControlName="id">
+        </label><br><br><label>Name:
+        <select formControlName="name">
+            <option *ngFor='let skill of skills'([ngValue])="skill">{{skill}}</option>
+        </select></label><br><br>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+<ul *ngIf='skill.id!=0'><li>Skill Id: {{skill.id}}</li>
+    <li>Skill : {{skill.name}}</li></ul>
+Form Builder:
+Create a new component and implement the same form using FormBuilder module
+Edit-emp-reactive.component.ts:
+import {FormBuilder, FormControl,FormGroup,Validators} from '@angular/forms';
+empForm=this.fb.group({
+   id:['',Validators.required],
+ name:['',[Validators.required,Validators.minLength(3)]],
+ salary:['',Validators.required],
+ permanent:['',Validators.required]});
+ 
+ departmentForm=this.fb.group({
+   id:['',Validators.required],
+   name:['',Validators.required]})
+ skillsForm=this.fb.group({
+   id:['',Validators.required]name:['',Validators.required]})
+
